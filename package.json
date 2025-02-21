@@ -2,6 +2,8 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "dev": "ts-node ./src/server.ts",
     "dotenv": "^16.4.7",
     "envalid": "^8.0.0",

@@ -22,7 +22,7 @@ class UserController implements Controller {
 
   private createUser = (request: express.Request, response: express.Response) => {
     const userData: User = request.body;
-    userData.password
+    // userData.password = await bcrypt.hash(userData.password, 10);
     const createdUser = new this.user(userData);
     createdUser.save()
       .then((savedUser) => {
