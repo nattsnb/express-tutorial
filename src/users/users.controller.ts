@@ -1,6 +1,6 @@
 import * as express from 'express';
 import Controller from '../interfaces/controller.interface';
-import userModel from "./users.model";
+import userModel from "./user.model";
 import User from "./user.interface";
 import * as bcrypt from 'bcrypt';
 
@@ -20,9 +20,9 @@ class UserController implements Controller {
     this.router.post(this.path, this.createUser);
   }
 
-  private createUser = (request: express.Request, response: express.Response) => {
+  private createUser = async (request: express.Request, response: express.Response) => {
     const userData: User = request.body;
-    // userData.password = await bcrypt.hash(userData.password, 10);
+    userData.password = await bcrypt.hash(userData.password, saltRounds);
     const createdUser = new this.user(userData);
     createdUser.save()
       .then((savedUser) => {
