@@ -77,7 +77,7 @@ class AuthenticationController implements Controller {
     const expiresIn = 60 * 60; // an hour
     const secret = process.env.JWT_SECRET;
     const dataStoredInToken: DataStoredInToken = {
-      _id: user._id,
+      _id: user._id.toString(),
     };
     return {
       expiresIn,

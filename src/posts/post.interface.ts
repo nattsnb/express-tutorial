@@ -1,5 +1,9 @@
+import mongoose from "mongoose";
+
+
 interface Post {
-  author: string;
+  _id?: mongoose.Types.ObjectId;
+  authorId: mongoose.Types.ObjectId;
   content: string;
   title: string;
 }

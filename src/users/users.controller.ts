@@ -17,16 +17,7 @@ class UserController implements Controller {
   }
 
   private initializeRoutes() {
-    this.router.post(this.path, this.createUser);
     this.router.get(this.path, this.getAllUsers);
-  }
-
-  private createUser = async (request: express.Request, response: express.Response) => {
-    const userData: User = request.body;
-    userData.password = await bcrypt.hash(userData.password, saltRounds);
-    const createdUser = new this.user(userData);
-    const savedUser = await createdUser.save();
-    response.send(savedUser);
   }
 
   private getAllUsers = async (request: express.Request, response: express.Response) => {
