@@ -18,6 +18,7 @@ class UserController implements Controller {
 
   private initializeRoutes() {
     this.router.post(this.path, this.createUser);
+    this.router.get(this.path, this.getAllUsers);
   }
 
   private createUser = async (request: express.Request, response: express.Response) => {
@@ -26,6 +27,13 @@ class UserController implements Controller {
     const createdUser = new this.user(userData);
     const savedUser = await createdUser.save();
     response.send(savedUser);
+  }
+
+  private getAllUsers = async (request: express.Request, response: express.Response) => {
+    this.user.find()
+      .then((users) => {
+        response.send(users);
+      });
   }
 }
 
