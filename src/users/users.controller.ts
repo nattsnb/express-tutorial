@@ -24,10 +24,8 @@ class UserController implements Controller {
     const userData: User = request.body;
     userData.password = await bcrypt.hash(userData.password, saltRounds);
     const createdUser = new this.user(userData);
-    createdUser.save()
-      .then((savedUser) => {
-        response.send(savedUser);
-      });
+    const savedUser = await createdUser.save();
+    response.send(savedUser);
   }
 }
 

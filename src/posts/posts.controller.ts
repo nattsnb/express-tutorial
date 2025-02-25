@@ -63,7 +63,7 @@ class PostsController implements Controller {
     this.post.findByIdAndDelete(id)
       .then((successResponse) => {
         if (successResponse) {
-          response.send(200);
+          response.sendStatus(200);
         } else {
           next(new PostNotFoundException(id));
         }
