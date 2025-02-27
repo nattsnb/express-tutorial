@@ -49,23 +49,18 @@ class AuthenticationController implements Controller {
   private loggingIn = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
     const logInData: LogInDto = request.body;
     const user = await this.user.findOne({ email: logInData.email });
-    if (user) {
-      const isPasswordMatching = await bcrypt.compare(logInData.password, user.password);
-      if (isPasswordMatching) {
-        user.password = undefined;
-        const tokenData = this.createToken(user);
-        response.setHeader('Set-Cookie', [this.createCookie(tokenData)]);
-        response.send({
-          user,
-          token: tokenData.token,
-        });
-      } else {
-        next(new WrongCredentialsException());
-      }
-    } else {
-      next(new WrongCredentialsException());
+    if (!user) {
+      return next(new WrongCredentialsException());
     }
-  }
+    const isPasswordMatching = await bcrypt.compare(logInData.password, user.password);
+    if (!isPasswordMatching) {
+      return next(new WrongCredentialsException());
+    }
+    user.password = undefined;
+    const tokenData = this.createToken(user);
+    response.setHeader('Set-Cookie', [this.createCookie(tokenData)]);
+    response.send({ user });
+  };
 
   private loggingOut = (request: express.Request, response: express.Response) => {
     response.setHeader('Set-Cookie', ['Authorization=;Max-age=0']);
@@ -73,7 +68,7 @@ class AuthenticationController implements Controller {
   }
 
   private createCookie(tokenData: TokenData) {
-    return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
+    return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}; Path=/; Domain=yourdomain.com`;
   }
 
   private createToken(user: User): TokenData {
