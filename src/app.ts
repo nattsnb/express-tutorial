@@ -1,9 +1,9 @@
-import * as express from 'express';
-import * as mongoose from 'mongoose';
-import Controller from './interfaces/controller.interface';
-import errorMiddleware from './middleware/error.middleware';
+import * as express from "express";
+import * as mongoose from "mongoose";
+import Controller from "./interfaces/controller.interface";
+import errorMiddleware from "./middleware/error.middleware";
 import * as bodyParser from "body-parser";
-import * as cookieParser from 'cookie-parser';
+import * as cookieParser from "cookie-parser";
 
 class App {
   public app: express.Application;
@@ -27,9 +27,9 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(cookieParser());
     this.app.use(function (req, res, next) {
-      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+      res.setHeader("Access-Control-Allow-Credentials", "true");
       next();
     });
   }
@@ -40,16 +40,12 @@ class App {
 
   private initializeControllers(controllers: Controller[]) {
     controllers.forEach((controller) => {
-      this.app.use('/', controller.router);
+      this.app.use("/", controller.router);
     });
   }
 
   private connectToTheDatabase() {
-    const {
-      MONGO_USER,
-      MONGO_PASSWORD,
-      MONGO_PATH,
-    } = process.env;
+    const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH } = process.env;
     mongoose
       .connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}`)
       .then(() => console.log("MongoDB connected successfully!"))
