@@ -1,9 +1,16 @@
-import * as express from 'express';
+import "dotenv/config";
+import App from "./app";
+import PostsController from "./posts/posts.controller";
+import validateEnv from "./utils/validateEnv";
+import UserController from "./users/users.controller";
+import AuthenticationController from "./authentication/authentication.controller";
 
-const app = express();
+validateEnv();
 
-app.get("/", (request, response) => {
-  response.send("Hello world!");
-});
+const app = new App([
+  new PostsController(),
+  new UserController(),
+  new AuthenticationController(),
+]);
 
-app.listen(5000);
+app.listen();
